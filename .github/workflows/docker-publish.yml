@@ -1,0 +1,37 @@
+name: Publicar Imagen Docker
+
+# 1. Trigger: Se ejecuta en cada push a la rama 'main'
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+    
+    # 2. Permisos necesarios para publicar en el registro de paquetes de GitHub
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      # 3. Descarga el código de tu repositorio
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 4. Inicia sesión en el GitHub Container Registry (GHCR)
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }} # Tu usuario de GitHub
+          password: ${{ secrets.GITHUB_TOKEN }} # Token automático de GitHub
+
+      # 5. Construye la imagen Docker y la publica
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:latest
+          # Ejemplo de tag: ghcr.io/tu-usuario/demo-flask-actions:latest
