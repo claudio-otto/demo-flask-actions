@@ -25,7 +25,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # --- ESTE PASO HA CAMBIADO ---
+      - name: 🐞 Depurar Valores de Secrets
+        run: |
+          echo "Project ID usado: [${{ secrets.GCP_PROJECT_ID }}]"
+          echo "GAR Location usado: [${{ secrets.GCP_ARTIFACT_REGISTRY_LOCATION }}]"
+          echo "GAR Repository usado: [${{ secrets.GCP_ARTIFACT_REGISTRY_REPOSITORY }}]"
+
       - name: Autenticar en Google Cloud
         uses: 'google-github-actions/auth@v2'
         with:
