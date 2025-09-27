@@ -1,4 +1,4 @@
-# 1. Usar una imagen base oficial de
+# 1. Usar una imagen base oficial de Python.
 FROM python:3.9-slim
 
 # 2. Establecer el directorio de trabajo dentro del contenedor
